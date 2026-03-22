@@ -1,0 +1,25 @@
+name: Unzip and Extract Files
+
+on:
+  push:
+    paths:
+      - '**.zip'  # 触发条件，当上传zip文件时
+
+jobs:
+  unzip_files:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Unzip the file
+      run: unzip *.zip
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'Your Name'
+        git config --global user.email 'your-email@example.com'
+        git add .
+        git commit -m "Auto-extracted files" || exit 0  # 如果文件没有变化，不提交
+        git push
